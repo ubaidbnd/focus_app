@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Focus{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+
+<div class="dashboard-container">
+
+    <section class="welcome-section">
+        <p class="eyebrow">YOUR DASHBOARD</p>
+        <h1>Welcome back, {{ user.username }}.</h1>
+        <p class="subtitle">
+            Stay focused. Build consistency.
+        </p>
+    </section>
+
+    <section class="stats">
+
+        <div class="stat-card">
+            <span class="stat-label">TODAY</span>
+            <h2>0 min</h2>
+            <p>Focus time</p>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-label">DAILY GOAL</span>
+            <h2>Not set</h2>
+            <p>Set your target</p>
+        </div>
+
+        <div class="stat-card">
+            <span class="stat-label">STREAK</span>
+            <h2>0 days</h2>
+            <p>Current streak</p>
+        </div>
+
+    </section>
+
+    <section class="focus-action">
+
+        <div>
+            <h2>Ready to focus?</h2>
+            <p>Start a session and make today count.</p>
+        </div>
+
+        <a href="#" class="primary-button">
+            Start Session
+        </a>
+
+    </section>
+
+</div>
+
+{% else %}
+
+<section class="landing-container">
+
+    <div class="landing-content">
+
+        <p class="eyebrow">FOCUS</p>
+
+        <h1>
+            Do less.<br>
+            Focus better.
+        </h1>
+
+        <p class="landing-subtitle">
+            Track your focused work, set daily goals,
+            and build a consistent streak.
+        </p>
+
+        <div class="landing-actions">
+            <a href="{% url 'signup' %}" class="primary-button">
+                Get Started
+            </a>
+
+            <a href="{% url 'login' %}" class="secondary-button">
+                Log In
+            </a>
+        </div>
+
+    </div>
+
+    <div class="landing-info">
+
+        <div>
+            <span>01</span>
+            <p>Set a daily focus goal.</p>
+        </div>
+
+        <div>
+            <span>02</span>
+            <p>Track your focused sessions.</p>
+        </div>
+
+        <div>
+            <span>03</span>
+            <p>Build your consistency.</p>
+        </div>
+
+    </div>
+
+</section>
+
+{% endif %}
+
+{% endblock %}

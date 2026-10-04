@@ -1,0 +1,404 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f7f7f7;
+    color: #1f1f1f;
+}
+
+
+/* ---------- Navbar ---------- */
+
+.navbar {
+    background: #ffffff;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.nav-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 18px 24px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: #111;
+    text-decoration: none;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+
+.nav-links a {
+    color: #555;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.nav-links a:hover {
+    color: #111;
+}
+
+.username {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111;
+}
+
+
+/* ---------- Dashboard ---------- */
+
+.dashboard-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 35px 24px;
+}
+
+
+/* ---------- Welcome ---------- */
+
+.welcome-section {
+    margin-bottom: 25px;
+}
+
+.eyebrow {
+    margin: 0 0 10px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #777;
+}
+
+.welcome-section h1 {
+    margin: 0;
+    font-size: 38px;
+    line-height: 1.2;
+}
+
+.subtitle {
+    margin-top: 12px;
+    color: #777;
+    font-size: 16px;
+}
+
+
+/* ---------- Stats ---------- */
+
+.stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.stat-card {
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.stat-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #888;
+}
+
+.stat-card h2 {
+    margin: 15px 0 5px;
+    font-size: 28px;
+}
+
+.stat-card p {
+    margin: 0;
+    color: #888;
+    font-size: 14px;
+}
+
+
+/* ---------- Focus Action ---------- */
+
+.focus-action {
+    margin-top: 24px;
+    padding: 28px;
+
+    background: #222;
+    color: white;
+
+    border-radius: 12px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.focus-action h2 {
+    margin: 0 0 6px;
+}
+
+.focus-action p {
+    margin: 0;
+    color: #bbb;
+}
+
+.primary-button {
+    background: white;
+    color: #222;
+
+    padding: 12px 20px;
+    border-radius: 7px;
+
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.primary-button:hover {
+    background: #eee;
+}
+
+/* ---------- Landing Page ---------- */
+
+.landing-container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 75px 24px;
+
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.landing-content h1 {
+    margin: 0;
+    font-size: 64px;
+    line-height: 1.05;
+    letter-spacing: -2px;
+}
+
+.landing-subtitle {
+    max-width: 500px;
+    margin: 25px 0 30px;
+
+    color: #777;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.landing-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.secondary-button {
+    padding: 12px 20px;
+
+    border: 1px solid #ddd;
+    border-radius: 7px;
+
+    color: #222;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+
+    background: white;
+}
+
+.secondary-button:hover {
+    background: #f2f2f2;
+}
+
+
+/* ---------- Landing Info ---------- */
+
+.landing-info {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.landing-info div {
+    padding: 20px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.landing-info span {
+    font-size: 12px;
+    font-weight: 700;
+    color: #999;
+}
+
+.landing-info p {
+    margin: 8px 0 0;
+    font-size: 16px;
+}
+
+/* ---------- Account Dropdown ---------- */
+
+.account-menu {
+    position: relative;
+}
+
+.account-menu summary {
+    cursor: pointer;
+    list-style: none;
+    font-size: 14px;
+    color: #555;
+}
+
+.account-menu summary:hover {
+    color: #111;
+}
+
+.account-dropdown {
+    position: absolute;
+    right: 0;
+    top: 28px;
+    min-width: 160px;
+    padding: 8px;
+    background: white;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.account-dropdown a,
+.account-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 8px 10px;
+    border: none;
+    background: none;
+    text-align: left;
+    color: #444;
+    font-size: 14px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.account-dropdown a:hover,
+.account-dropdown button:hover {
+    background: #f5f5f5;
+    border-radius: 5px;
+}
+
+/* ---------- Authentication ---------- */
+
+.auth-container {
+    max-width: 420px;
+    margin: 60px auto;
+    padding: 32px;
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+}
+
+.auth-container h1 {
+    margin: 0 0 8px;
+    font-size: 30px;
+}
+
+.auth-subtitle {
+    margin: 0 0 28px;
+    color: #777;
+    font-size: 14px;
+}
+
+.auth-form p {
+    margin: 0 0 18px;
+}
+
+.auth-form label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: #198754;
+    box-shadow: 0 0 0 2px rgba(25, 135, 84, 0.1);
+}
+
+.auth-form ul {
+    margin: 8px 0 0;
+    padding-left: 18px;
+    color: #777;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.auth-form .helptext {
+    display: block;
+    margin-top: 7px;
+    color: #777;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.btn-success {
+    width: 100%;
+    padding: 10px 18px;
+    margin-top: 4px;
+    border: none;
+    border-radius: 6px;
+    background: #198754;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-success:hover {
+    background: #157347;
+}
+
+.auth-links {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.auth-links p {
+    margin-bottom: 8px;
+}
+
+.auth-links a {
+    color: #198754;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-links a:hover {
+    text-decoration: underline;
+}
+
+.logout-btn {
+    padding: 8px 16px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    cursor: pointer;
+}
