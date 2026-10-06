@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Set Goal{% endblock title %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+<section class="welcome-section">
+    <p class="eyebrow">DAILY GOAL</p>
+
+    {% if request.user.usergoal %}
+        <h1>Update your goal</h1>
+        <p class="subtitle">
+            Current goal: {{ request.user.usergoal.display_goal }}
+        </p>
+    {% else %}
+        <h1>Set your goal</h1>
+        <p class="subtitle">
+            Choose your daily focus target.
+        </p>
+    {% endif %}
+</section>
+
+<section class="stat-card goal-form-card">
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label for="{{ form.goal.id_for_label }}">Daily focus goal</label>
+
+        {{ form.goal }}
+
+        <button type="submit" class="primary-button">
+            {% if request.user.usergoal %}
+                Update Goal
+            {% else %}
+                Set Goal
+            {% endif %}
+        </button>
+    </form>
+
+    {% if request.user.usergoal %}
+        <form action="{% url 'remove_goal' %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="secondary-button">
+                Remove Goal
+            </button>
+        </form>
+    {% endif %}
+
+</section>
+
+</div>
+
+{% endblock content %}
