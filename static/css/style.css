@@ -448,3 +448,265 @@ cursor: pointer;
 .goal-form-card form {
 margin-top: 12px;
 }
+
+/* =========================================
+   FOCUS SESSION PAGE
+   ========================================= */
+
+.focus-session-page {
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 70px 24px;
+}
+
+
+/* Header */
+
+.focus-session-header {
+    margin-bottom: 35px;
+}
+
+.focus-session-eyebrow {
+    margin: 0 0 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+}
+
+.focus-session-title {
+    margin: 0;
+    font-size: 46px;
+    font-weight: 600;
+    letter-spacing: -1.8px;
+    line-height: 1.1;
+}
+
+.focus-session-subtitle {
+    margin: 14px 0 0;
+    color: #777;
+    font-size: 16px;
+}
+
+
+/* Error */
+
+.focus-session-error {
+    min-height: 20px;
+    margin-bottom: 12px;
+    color: #c0392b;
+    font-size: 14px;
+}
+
+
+/* Card */
+
+.focus-session-card {
+    padding: 34px;
+    background: #ffffff;
+    border: 1px solid #e7e7e7;
+    border-radius: 16px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.04);
+}
+
+
+/* Card header */
+
+.focus-session-card-header {
+    margin-bottom: 28px;
+}
+
+.focus-session-label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.focus-session-card-header p {
+    margin: 9px 0 0;
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* Duration */
+
+.focus-session-duration {
+    margin-bottom: 24px;
+}
+
+.focus-session-duration label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.focus-session-duration input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 15px;
+    border: 1px solid #dcdcdc;
+    border-radius: 9px;
+    background: #fafafa;
+    font-size: 18px;
+    transition:
+        border-color 0.2s ease,
+        background 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.focus-session-duration input:focus {
+    outline: none;
+    border-color: #222;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.06);
+}
+
+
+/* Buttons */
+
+.focus-session-primary-button,
+.focus-session-secondary-button {
+    border-radius: 9px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+        transform 0.15s ease,
+        background 0.15s ease,
+        border-color 0.15s ease;
+}
+
+.focus-session-primary-button {
+    width: 100%;
+    border: 1px solid #222;
+    background: #222;
+    color: #ffffff;
+}
+
+.focus-session-primary-button:hover {
+    background: #000;
+    transform: translateY(-1px);
+}
+
+.focus-session-secondary-button {
+    border: 1px solid #dddddd;
+    background: #ffffff;
+    color: #222;
+}
+
+.focus-session-secondary-button:hover {
+    border-color: #bbb;
+    background: #f7f7f7;
+}
+
+
+/* Timer */
+
+.focus-session-timer-card {
+    text-align: center;
+}
+
+.focus-session-timer {
+    margin: 42px 0;
+    font-size: 76px;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -3px;
+    font-variant-numeric: tabular-nums;
+}
+
+.focus-session-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.focus-session-controls button {
+    min-width: 120px;
+}
+
+.focus-session-controls[hidden] {
+    display: none;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .focus-session-page {
+        padding: 45px 18px;
+    }
+
+    .focus-session-title {
+        font-size: 36px;
+    }
+
+    .focus-session-card {
+        padding: 25px;
+    }
+
+    .focus-session-timer {
+        font-size: 58px;
+    }
+
+    .focus-session-controls {
+        flex-direction: column;
+    }
+
+    .focus-session-controls button {
+        width: 100%;
+    }
+
+}
+
+/* Daily goal progress */
+
+.goal-progress {
+    margin-top: 1rem;
+}
+
+.goal-progress-heading,
+.goal-progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.goal-progress-heading {
+    margin-bottom: 0.65rem;
+}
+
+.goal-progress-heading p,
+.goal-progress-meta p {
+    margin: 0;
+}
+
+.goal-progress-track {
+    width: 100%;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--border-color, #e5e7eb);
+}
+
+.goal-progress-fill {
+    height: 100%;
+    border-radius: inherit;
+    background: var(--accent-color, #16a34a);
+    transition: width 200ms ease;
+}
+
+.goal-progress-meta {
+    margin-top: 0.65rem;
+    font-size: 0.875rem;
+}
+
+.goal-progress-status {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+}

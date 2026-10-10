@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     # "crispy_bootstrap5",
     # local
     "accounts",
+    "focus_sessions",
 ]
 
 # CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -51,6 +52,10 @@ AUTH_USER_MODEL = "accounts.User"
 
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
+
+USE_TZ = True
+
+TIME_ZONE = "Asia/Kolkata"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -116,8 +121,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
 LANGUAGE_CODE = "en-us"
-
-TIME_ZONE = "UTC"
 
 USE_I18N = True
 

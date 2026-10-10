@@ -4,7 +4,6 @@ from django.views import generic
 from django.views.decorators.http import require_POST
 from .models import User
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
@@ -42,24 +41,10 @@ def set_goal(request):
 def remove_goal(request):
     goal_instance = getattr(request.user, 'usergoal', None)
 
-    print(goal_instance)
-
     if goal_instance:
         goal_instance.delete()
 
     return redirect('home')
 
-
-
-    
-# class SetGoal(LoginRequiredMixin, generic.CreateView):
-#     model = UserGoal
-#     fields = ["goal",]
-#     success_url = reverse_lazy("home")
-#     template_name = "set_goal.html"
-
-#     def form_valid(self, form):
-#         form.instance.user = self.request.user
-#         return super().form_valid(form)
     
 

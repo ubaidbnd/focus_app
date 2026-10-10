@@ -1,0 +1,665 @@
+{% extends "base.html" %}
+
+{% block title %}Focus Session{% endblock %}
+
+{% block content %}
+
+{% csrf_token %}
+
+<div class="focus-session-page">
+
+    <section class="focus-session-header">
+
+        <p class="focus-session-eyebrow">
+            FOCUS SESSION
+        </p>
+
+        <h1 class="focus-session-title">
+            Time to focus.
+        </h1>
+
+        <p class="focus-session-subtitle">
+            Choose your session length and get to work.
+        </p>
+
+    </section>
+
+
+    <div
+        id="error-message"
+        class="focus-session-error"
+    ></div>
+
+
+    <!-- Duration selection -->
+
+    <section
+        id="duration-section"
+        class="focus-session-card"
+    >
+
+        <div class="focus-session-card-header">
+
+            <span class="focus-session-label">
+                SESSION LENGTH
+            </span>
+
+            <p>
+                Set anywhere between 15 and 240 minutes.
+            </p>
+
+        </div>
+
+
+        <div class="focus-session-duration">
+
+            <label for="duration">
+                Minutes
+            </label>
+
+            <input
+                type="number"
+                id="duration"
+                min="15"
+                max="240"
+                step="15"
+                value="30"
+            >
+
+        </div>
+
+
+        <button
+            id="start-button"
+            class="focus-session-primary-button"
+            type="button"
+        >
+            Start Session
+        </button>
+
+    </section>
+
+
+    <!-- Timer -->
+
+    <section
+        id="timer-section"
+        class="focus-session-card focus-session-timer-card"
+        hidden
+    >
+
+        <span class="focus-session-label">
+            FOCUSING
+        </span>
+
+
+        <div
+            id="timer"
+            class="focus-session-timer"
+        >
+            00:30
+        </div>
+
+
+        <!-- Running controls -->
+
+        <div
+            id="running-controls"
+            class="focus-session-controls"
+        >
+
+            <button
+                id="pause-button"
+                class="focus-session-secondary-button"
+                type="button"
+            >
+                Pause
+            </button>
+
+
+            <button
+                id="cancel-button"
+                class="focus-session-secondary-button"
+                type="button"
+            >
+                Cancel
+            </button>
+
+        </div>
+
+
+        <!-- Paused controls -->
+
+        <div
+            id="paused-controls"
+            class="focus-session-controls"
+            hidden
+        >
+
+            <button
+                id="continue-button"
+                class="focus-session-primary-button"
+                type="button"
+            >
+                Continue
+            </button>
+
+
+            <button
+                id="paused-cancel-button"
+                class="focus-session-secondary-button"
+                type="button"
+            >
+                Cancel
+            </button>
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+
+// ------------------------------------
+// Elements
+// ------------------------------------
+
+const durationSection =
+    document.getElementById("duration-section");
+
+const durationInput =
+    document.getElementById("duration");
+
+const startButton =
+    document.getElementById("start-button");
+
+const timerSection =
+    document.getElementById("timer-section");
+
+const timerDisplay =
+    document.getElementById("timer");
+
+const runningControls =
+    document.getElementById("running-controls");
+
+const pausedControls =
+    document.getElementById("paused-controls");
+
+const pauseButton =
+    document.getElementById("pause-button");
+
+const continueButton =
+    document.getElementById("continue-button");
+
+const cancelButton =
+    document.getElementById("cancel-button");
+
+const pausedCancelButton =
+    document.getElementById("paused-cancel-button");
+
+const errorMessage =
+    document.getElementById("error-message");
+
+
+// ------------------------------------
+// Timer state
+// ------------------------------------
+
+let remainingSeconds = 0;
+
+let timerInterval = null;
+
+let endTime = null;
+
+let audioContext = null;
+
+
+// ------------------------------------
+// CSRF
+// ------------------------------------
+
+function getCSRFToken() {
+
+    return document.querySelector(
+        "[name=csrfmiddlewaretoken]"
+    ).value;
+
+}
+
+
+// ------------------------------------
+// Send request to Django
+// ------------------------------------
+
+async function sendAction(
+    action,
+    duration = null
+) {
+
+    const formData = new FormData();
+
+    formData.append(
+        "csrfmiddlewaretoken",
+        getCSRFToken()
+    );
+
+    formData.append(
+        "action",
+        action
+    );
+
+
+    if (duration !== null) {
+
+        formData.append(
+            "duration_minutes",
+            duration
+        );
+
+    }
+
+
+    const response = await fetch(
+        window.location.href,
+        {
+            method: "POST",
+            body: formData
+        }
+    );
+
+
+    const data = await response.json();
+
+
+    if (!response.ok) {
+
+        throw new Error(
+            data.error || "Something went wrong"
+        );
+
+    }
+
+
+    return data;
+
+}
+
+
+// ------------------------------------
+// Timer display
+// ------------------------------------
+
+function updateTimerDisplay() {
+
+    const minutes =
+        Math.floor(remainingSeconds / 60);
+
+    const seconds =
+        remainingSeconds % 60;
+
+
+    timerDisplay.textContent =
+        String(minutes).padStart(2, "0") +
+        ":" +
+        String(seconds).padStart(2, "0");
+
+}
+
+
+// ------------------------------------
+// Start timestamp-based countdown
+// ------------------------------------
+
+function startCountdown(
+    durationSeconds
+) {
+
+    clearInterval(timerInterval);
+
+
+    endTime =
+        Date.now() +
+        (durationSeconds * 1000);
+
+
+    updateCountdown();
+
+
+    timerInterval = setInterval(
+        updateCountdown,
+        250
+    );
+
+}
+
+
+// ------------------------------------
+// Update countdown
+// ------------------------------------
+
+async function updateCountdown() {
+
+    if (endTime === null) {
+        return;
+    }
+
+
+    const millisecondsRemaining =
+        endTime - Date.now();
+
+
+    remainingSeconds = Math.max(
+        0,
+        Math.ceil(
+            millisecondsRemaining / 1000
+        )
+    );
+
+
+    updateTimerDisplay();
+
+
+    if (remainingSeconds <= 0) {
+
+        clearInterval(timerInterval);
+
+        timerInterval = null;
+
+        endTime = null;
+
+
+        try {
+
+            await sendAction("complete");
+
+            await playCompletionSound();
+
+            window.location.href =
+                "{% url 'home' %}";
+
+        } catch (error) {
+
+            showError(error.message);
+
+        }
+
+    }
+
+}
+
+
+// ------------------------------------
+// Show error
+// ------------------------------------
+
+function playCompletionSound() {
+
+    return new Promise(async (resolve) => {
+
+        try {
+
+            if (!audioContext) {
+                resolve();
+                return;
+            }
+
+            await audioContext.resume();
+
+            const oscillator =
+                audioContext.createOscillator();
+
+            const gainNode =
+                audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.type = "sine";
+            oscillator.frequency.value = 800;
+
+            const now = audioContext.currentTime;
+
+            gainNode.gain.setValueAtTime(0, now);
+            gainNode.gain.linearRampToValueAtTime(0.3, now + 0.05);
+            gainNode.gain.setValueAtTime(0.3, now + 0.7);
+            gainNode.gain.linearRampToValueAtTime(0, now + 1);
+
+            oscillator.onended = resolve;
+
+            oscillator.start(now);
+            oscillator.stop(now + 1);
+
+        } catch (error) {
+
+            console.error("Completion sound failed:", error);
+            resolve();
+
+        }
+
+    });
+
+}
+
+
+// ------------------------------------
+// Clear error
+// ------------------------------------
+
+function clearError() {
+
+    errorMessage.textContent = "";
+
+}
+
+
+// ------------------------------------
+// Start session
+// ------------------------------------
+
+startButton.addEventListener(
+    "click",
+    async () => {
+
+        clearError();
+
+
+        const duration =
+            Number(durationInput.value);
+
+
+        if (
+            !Number.isInteger(duration) ||
+            duration < 5 ||
+            duration > 240
+        ) {
+
+            showError(
+                "Duration must be between 5 and 240 minutes."
+            );
+
+            return;
+
+        }
+
+
+        try {
+
+            audioContext = new AudioContext();
+
+            await audioContext.resume();
+
+            const data =
+                await sendAction(
+                    "start",
+                    duration
+                );
+
+
+            remainingSeconds =
+                data.remaining_duration * 60;
+
+
+            durationSection.hidden =
+                true;
+
+            timerSection.hidden =
+                false;
+
+
+            runningControls.hidden =
+                false;
+
+            pausedControls.hidden =
+                true;
+
+
+            startCountdown(
+                remainingSeconds
+            );
+
+        } catch (error) {
+
+            showError(error.message);
+
+        }
+
+    }
+);
+
+
+// ------------------------------------
+// Pause session
+// ------------------------------------
+
+pauseButton.addEventListener(
+    "click",
+    async () => {
+
+        clearInterval(timerInterval);
+
+        timerInterval = null;
+
+        endTime = null;
+
+
+        try {
+
+            const data =
+                await sendAction("pause");
+
+
+            remainingSeconds =
+                data.remaining_minutes * 60;
+
+
+            runningControls.hidden =
+                true;
+
+            pausedControls.hidden =
+                false;
+
+
+            updateTimerDisplay();
+
+        } catch (error) {
+
+            showError(error.message);
+
+        }
+
+    }
+);
+
+
+// ------------------------------------
+// Continue session
+// ------------------------------------
+
+continueButton.addEventListener(
+    "click",
+    async () => {
+
+        clearError();
+
+
+        try {
+
+            const data =
+                await sendAction("continue");
+
+
+            remainingSeconds =
+                data.remaining_duration * 60;
+
+
+            runningControls.hidden =
+                false;
+
+            pausedControls.hidden =
+                true;
+
+
+            startCountdown(
+                remainingSeconds
+            );
+
+        } catch (error) {
+
+            showError(error.message);
+
+        }
+
+    }
+);
+
+
+// ------------------------------------
+// Cancel session
+// ------------------------------------
+
+async function cancelSession() {
+
+    clearInterval(timerInterval);
+
+    timerInterval = null;
+
+    endTime = null;
+
+
+    try {
+
+        await sendAction("cancel");
+
+        window.location.href =
+            "{% url 'home' %}";
+
+    } catch (error) {
+
+        showError(error.message);
+
+    }
+
+}
+
+
+cancelButton.addEventListener(
+    "click",
+    cancelSession
+);
+
+
+pausedCancelButton.addEventListener(
+    "click",
+    cancelSession
+);
+
+function showError(message) {
+    errorMessage.textContent = message;
+};
+
+</script>
+
+{% endblock %}

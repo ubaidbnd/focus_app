@@ -10,7 +10,7 @@
 
 <section class="welcome-section">
     <p class="eyebrow">YOUR DASHBOARD</p>
-    <h1>Welcome back, {{ user.username }}.</h1>
+    <h1>Welcome {{ user.username }}.</h1>
     <p class="subtitle">
         Stay focused. Build consistency.
     </p>
@@ -20,7 +20,7 @@
 
     <div class="stat-card">
         <span class="stat-label">TODAY</span>
-        <h2>0 min</h2>
+        <h2>{{ total_duration }}</h2>
         <p>Focus time</p>
     </div>
 
@@ -29,9 +29,43 @@
 
             <span class="stat-label">DAILY GOAL</span>
 
-            {% if request.user.usergoal %}
-                <h2>{{ request.user.usergoal.display_goal }}</h2>
+            {% if goal_duration %}
+                <h2>{{ goal_duration }}</h2>
                 <p>Change your goal</p>
+
+                <div class="goal-progress">
+
+                    <div class="goal-progress-heading">
+                        <p>Progress</p>
+                        <p>{{ progress|floatformat:0 }}%</p>
+                    </div>
+
+                    <div
+                        class="goal-progress-track"
+                        role="progressbar"
+                        aria-label="Daily focus goal progress"
+                        aria-valuemin="0"
+                        aria-valuemax="100"
+                        aria-valuenow="{{ progress|floatformat:0 }}"
+                    >
+                        <div
+                            class="goal-progress-fill"
+                            style="width: {{ progress }}%;"
+                        ></div>
+                    </div>
+
+                    {% if goal_complete %}
+                        <p class="goal-progress-status">
+                            Goal completed! Great work.
+                        </p>
+                    {% else %}
+                        <div class="goal-progress-meta">
+                            <p>{{ remaining_duration }} left</p>
+                        </div>
+                    {% endif %}
+
+                </div>
+
             {% else %}
                 <h2>No goal set</h2>
                 <p>Set a daily goal</p>
@@ -55,7 +89,7 @@
         <p>Start a session and make today count.</p>
     </div>
 
-    <a href="#" class="primary-button">
+    <a href="{% url 'create_session' %}" class="primary-button">
         Start Session
     </a>
 
@@ -117,7 +151,6 @@
 {% endif %}
 
 {% endblock %}
-
 {% comment %} {% extends "base.html" %}
 
 {% block title %}Focus{% endblock %}
@@ -128,48 +161,60 @@
 
 <div class="dashboard-container">
 
-    <section class="welcome-section">
-        <p class="eyebrow">YOUR DASHBOARD</p>
-        <h1>Welcome back, {{ user.username }}.</h1>
-        <p class="subtitle">
-            Stay focused. Build consistency.
-        </p>
-    </section>
+<section class="welcome-section">
+    <p class="eyebrow">YOUR DASHBOARD</p>
+    <h1>Welcome back, {{ user.username }}.</h1>
+    <p class="subtitle">
+        Stay focused. Build consistency.
+    </p>
+</section>
 
-    <section class="stats">
+<section class="stats">
 
-        <div class="stat-card">
-            <span class="stat-label">TODAY</span>
-            <h2>0 min</h2>
-            <p>Focus time</p>
-        </div>
+    <div class="stat-card">
+        <span class="stat-label">TODAY</span>
+        <h2>
+            {{ total_duration }}
+        </h2>
+        <p>Focus time</p>
+    </div>
 
-        <div class="stat-card">
+    <div class="stat-card">
+        <a href="{% url 'set_goal' %}" class="stat-card-link">
+
             <span class="stat-label">DAILY GOAL</span>
-            <h2>{{ request.user.usergoal.goal }}</h2>
-            <p>Set your target</p>
-        </div>
 
-        <div class="stat-card">
-            <span class="stat-label">STREAK</span>
-            <h2>0 days</h2>
-            <p>Current streak</p>
-        </div>
+            {% if request.user.usergoal %}
+                <h2>{{ request.user.usergoal.display_goal }}</h2>
+                <p>Change your goal</p>
+            {% else %}
+                <h2>No goal set</h2>
+                <p>Set a daily goal</p>
+            {% endif %}
 
-    </section>
-
-    <section class="focus-action">
-
-        <div>
-            <h2>Ready to focus?</h2>
-            <p>Start a session and make today count.</p>
-        </div>
-
-        <a href="#" class="primary-button">
-            Start Session
         </a>
+    </div>
 
-    </section>
+    <div class="stat-card">
+        <span class="stat-label">STREAK</span>
+        <h2>0 days</h2>
+        <p>Current streak</p>
+    </div>
+
+</section>
+
+<section class="focus-action">
+
+    <div>
+        <h2>Ready to focus?</h2>
+        <p>Start a session and make today count.</p>
+    </div>
+
+    <a href="{% url 'create_session' %}" class="primary-button">
+        Start Session
+    </a>
+
+</section>
 
 </div>
 
@@ -177,50 +222,50 @@
 
 <section class="landing-container">
 
-    <div class="landing-content">
+<div class="landing-content">
 
-        <p class="eyebrow">FOCUS</p>
+    <p class="eyebrow">FOCUS</p>
 
-        <h1>
-            Do less.<br>
-            Focus better.
-        </h1>
+    <h1>
+        Do less.<br>
+        Focus better.
+    </h1>
 
-        <p class="landing-subtitle">
-            Track your focused work, set daily goals,
-            and build a consistent streak.
-        </p>
+    <p class="landing-subtitle">
+        Track your focused work, set daily goals,
+        and build a consistent streak.
+    </p>
 
-        <div class="landing-actions">
-            <a href="{% url 'signup' %}" class="primary-button">
-                Get Started
-            </a>
+    <div class="landing-actions">
+        <a href="{% url 'signup' %}" class="primary-button">
+            Get Started
+        </a>
 
-            <a href="{% url 'login' %}" class="secondary-button">
-                Log In
-            </a>
-        </div>
-
+        <a href="{% url 'login' %}" class="secondary-button">
+            Log In
+        </a>
     </div>
 
-    <div class="landing-info">
+</div>
 
-        <div>
-            <span>01</span>
-            <p>Set a daily focus goal.</p>
-        </div>
+<div class="landing-info">
 
-        <div>
-            <span>02</span>
-            <p>Track your focused sessions.</p>
-        </div>
-
-        <div>
-            <span>03</span>
-            <p>Build your consistency.</p>
-        </div>
-
+    <div>
+        <span>01</span>
+        <p>Set a daily focus goal.</p>
     </div>
+
+    <div>
+        <span>02</span>
+        <p>Track your focused sessions.</p>
+    </div>
+
+    <div>
+        <span>03</span>
+        <p>Build your consistency.</p>
+    </div>
+
+</div>
 
 </section>
 

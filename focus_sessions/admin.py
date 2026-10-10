@@ -1,12 +1,10 @@
 from django.contrib import admin
-from .models import User, UserGoal
+from .models import FocusSession
 # Register your models here.
 
-admin.site.register(User)
-
-class UserGoalAdmin(admin.ModelAdmin):
+class FocusSessionAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj = None):
         if obj:
             return ['user']
         return []
-admin.site.register(UserGoal, UserGoalAdmin)
+admin.site.register(FocusSession, FocusSessionAdmin)
