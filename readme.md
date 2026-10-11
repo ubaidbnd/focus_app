@@ -15,7 +15,7 @@ A personal productivity and focus-tracking web application built with Django.
 - PostgreSQL
 - HTML
 - CSS
-- JS *(just a bit for countdown timer)*
+- JS *(countdown timer and sound for countdown over)*
 
 # Project Status
 In development
@@ -28,12 +28,11 @@ In development
 - Password change
 - Password reset
 - Authentication UI
+- User goal
+- Focus session
 
 ### Next
 
-- Focus session model
-- Create/start a focus session
-- Countdown timer
 - Track completed sessions
 - Focus history
 

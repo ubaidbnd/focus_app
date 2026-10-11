@@ -76,7 +76,13 @@
 
     <div class="stat-card">
         <span class="stat-label">STREAK</span>
-        <h2>0 days</h2>
+        <h2>
+            {% if streak_count %}
+              {{ streak_count }} day{{ streak_count|pluralize }}
+            {% else %}
+              0 days
+            {% endif %}
+        </h2>
         <p>Current streak</p>
     </div>
 
