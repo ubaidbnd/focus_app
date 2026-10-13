@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from django.utils.dateparse import parse_datetime
+from django.db.models.functions import TruncDate
+from django.utils.dateparse import parse_datetime, parse_date
 from django.http import JsonResponse
 from .models import FocusSession
 # Create your views here.
@@ -156,4 +157,34 @@ def create_focus_session(request):
         }, status=400)
         
     return render(request, "focus_session.html")
-            
+
+
+@login_required
+def show_focus_history(request):
+
+    selected_date = request.GET.get("date", "")
+    parsed_date = parse_date(selected_date) if selected_date else None
+    error = "Please enter a valid " \
+            "date." if selected_date and parsed_date is None else None
+    
+    focus_sessions = FocusSession.objects.filter(
+        user=request.user).annotate(day=TruncDate("session_started",
+        tzinfo=timezone.get_current_timezone()),
+        ).order_by("-day", "-session_started")
+
+    if parsed_date:
+        focus_sessions = focus_sessions.filter(day=parsed_date)
+
+    grouped_sessions = {}
+
+    for session in focus_sessions:
+        if session.day in grouped_sessions:
+            grouped_sessions[session.day].append(session)
+        else:
+            grouped_sessions[session.day] = [session]
+
+    context = {"grouped_sessions": grouped_sessions,
+               "error": error,
+               "selected_date": selected_date}
+    return render(request, "history.html", context)
+

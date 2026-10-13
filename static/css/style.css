@@ -449,9 +449,7 @@ cursor: pointer;
 margin-top: 12px;
 }
 
-/* =========================================
-   FOCUS SESSION PAGE
-   ========================================= */
+/* FOCUS SESSION PAGE */
 
 .focus-session-page {
     max-width: 620px;
@@ -709,4 +707,356 @@ margin-top: 12px;
 .goal-progress-status {
     margin-top: 0.75rem;
     font-size: 0.9rem;
+}
+
+/* FOCUS HISTORY */
+
+.history-page {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 55px 24px 75px;
+}
+
+/* Header */
+
+.history-header {
+    margin-bottom: 38px;
+}
+
+.history-header h1 {
+    margin: 0;
+    font-size: 42px;
+    line-height: 1.15;
+    letter-spacing: -1.5px;
+}
+
+.history-subtitle {
+    max-width: 520px;
+    margin: 13px 0 0;
+    color: #777;
+    font-size: 15px;
+    line-height: 1.7;
+}
+
+/* Date groups */
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.history-day-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 13px;
+    margin-bottom: 15px;
+}
+
+.history-date-marker {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ebebeb;
+    border: 1px solid #e3e3e3;
+    border-radius: 10px;
+}
+
+.history-date-marker span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #333;
+}
+
+.history-day-header h2 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.4;
+}
+
+.history-day-header p {
+    margin: 4px 0 0;
+    color: #888;
+    font-size: 13px;
+}
+
+/* Session card */
+
+.history-session-list {
+    margin-left: 16px;
+    padding-left: 30px;
+    border-left: 1px solid #e3e3e3;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.history-session {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 19px 20px;
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.history-session:hover {
+    border-color: #d5d5d5;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.035);
+    transform: translateY(-1px);
+}
+
+.history-session-icon {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f5f5f5;
+    border: 1px solid #ededed;
+    border-radius: 11px;
+    color: #444;
+}
+
+.history-session-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.history-session-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.history-session-label {
+    display: block;
+    margin-bottom: 5px;
+    color: #888;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+}
+
+.history-session-details h3 {
+    margin: 0;
+    color: #222;
+    font-size: 17px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.history-duration {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    flex-shrink: 0;
+    padding: 8px 11px;
+    background: #f5f5f5;
+    border: 1px solid #ededed;
+    border-radius: 8px;
+    color: #333;
+}
+
+.history-duration span:first-child {
+    font-size: 16px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+}
+
+.history-duration span:last-child {
+    color: #777;
+    font-size: 12px;
+}
+
+/* Empty state */
+
+.history-empty {
+    padding: 55px 28px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #e8e8e8;
+    border-radius: 16px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.025);
+}
+
+.history-empty-icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3f3f3;
+    border: 1px solid #e8e8e8;
+    border-radius: 16px;
+    color: #444;
+}
+
+.history-empty-icon svg {
+    width: 27px;
+    height: 27px;
+}
+
+.history-empty h2 {
+    margin: 0;
+    font-size: 21px;
+    letter-spacing: -0.4px;
+}
+
+.history-empty p {
+    max-width: 390px;
+    margin: 12px auto 24px;
+    color: #777;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.history-empty-button {
+    display: inline-block;
+    background: #222;
+    color: #fff;
+}
+
+.history-empty-button:hover {
+    background: #000;
+}
+
+/* Responsive layout */
+
+@media (max-width: 600px) {
+    .history-page {
+        padding: 38px 18px 55px;
+    }
+
+    .history-header {
+        margin-bottom: 29px;
+    }
+
+    .history-header h1 {
+        font-size: 34px;
+        letter-spacing: -1px;
+    }
+
+    .history-list {
+        gap: 25px;
+    }
+
+    .history-day-header h2 {
+        font-size: 15px;
+    }
+
+    .history-session-list {
+        margin-left: 12px;
+        padding-left: 17px;
+    }
+
+    .history-session {
+        gap: 11px;
+        padding: 15px 12px;
+    }
+
+    .history-session-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .history-session-details h3 {
+        font-size: 15px;
+    }
+
+    .history-session-label {
+        font-size: 9px;
+        letter-spacing: 0.8px;
+    }
+
+    .history-duration {
+        padding: 7px 8px;
+        gap: 3px;
+    }
+
+    .history-duration span:first-child {
+        font-size: 14px;
+    }
+
+    .history-duration span:last-child {
+        font-size: 11px;
+    }
+
+    .history-empty {
+        padding: 42px 20px;
+    }
+
+    .history-empty h2 {
+        font-size: 19px;
+    }
+}
+
+.history-filter {
+margin-bottom: 28px;
+padding: 18px;
+background: #fff;
+border: 1px solid #e8e8e8;
+border-radius: 12px;
+}
+
+.history-filter label {
+display: block;
+margin-bottom: 10px;
+color: #555;
+font-size: 13px;
+font-weight: 600;
+}
+
+.history-filter-controls {
+display: flex;
+align-items: center;
+flex-wrap: wrap;
+gap: 10px;
+}
+
+.history-filter input[type="date"] {
+min-width: 0;
+padding: 10px 12px;
+font: inherit;
+border: 1px solid #ddd;
+border-radius: 8px;
+background: #fff;
+color: #222;
+}
+
+.history-filter .primary-button {
+border: none;
+cursor: pointer;
+font: inherit;
+padding: 10px 16px;
+}
+
+.history-clear-filter {
+padding: 10px 8px;
+color: #666;
+font-size: 14px;
+text-decoration: none;
+}
+
+.history-clear-filter {
+color: #222;
+text-decoration: underline;
+}
+
+.history-filter-error {
+margin: -14px 0 24px;
+color: #b42318;
+font-size: 13px;
 }

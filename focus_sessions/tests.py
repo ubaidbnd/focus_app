@@ -1,11 +1,11 @@
 from django.test import TestCase
-from datetime import datetime, time, timedelta
-# Create your tests here.
 from django.contrib.auth import get_user_model
 from datetime import timedelta
 from django.urls import reverse
 from django.utils import timezone
 from django.db.models.functions import TruncDate
+
+from datetime import datetime, time, timedelta
 
 from .models import FocusSession
 from accounts.models import UserGoal
@@ -29,7 +29,7 @@ class HomeViewTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["total_duration"], '0 min')
-        self.assertTemplateUsed("home.html")
+        self.assertTemplateUsed(response, "home.html")
 
     def test_home_sums_today_focus_session(self):
         now = timezone.now()
@@ -198,3 +198,110 @@ class StreakTests(TestCase):
         )
 
         self.assertEqual(local_day, today)
+
+class HistoryViewTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(
+            username='testuser',
+            email='test@user.com',
+            password='tuse1234'
+        )
+        self.client.force_login(self.user)
+        self.url = reverse("focus_history")
+
+    def test_history_page_loads(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "history.html")
+
+    def test_user_only_sees_own_sessions(self):
+        other_user = User.objects.create_user(
+            username='testuser2',
+            email='test@2.com',
+            password='tuse2123'
+        )
+
+        FocusSession.objects.create(
+            user = self.user,
+            duration_minutes = 30,
+            session_started = timezone.now() - timedelta(minutes=40)
+        )
+
+        FocusSession.objects.create(
+            user = other_user,
+            duration_minutes = 45,
+            session_started = timezone.now() - timedelta(minutes=60)
+        )
+
+        response = self.client.get(self.url)
+
+        grouped_sessions = response.context["grouped_sessions"]
+
+        sessions = [session for sessions in grouped_sessions.values()
+                    for session in sessions]
+
+        duration = [session.duration_minutes for session in sessions]
+
+        self.assertEqual(duration, [30])
+
+    def test_date_filter_shows_only_selected_date_sessions(self):
+        selected_date = timezone.localdate()
+        yesterday = selected_date - timedelta(days=1)
+
+        today_datetime = timezone.make_aware(
+            datetime.combine(selected_date, time(12, 0)),
+            timezone.get_current_timezone()
+        )
+
+        yesterday_datetime = timezone.make_aware(
+            datetime.combine(yesterday, time(12, 0)),
+            timezone.get_current_timezone()
+        )
+
+        today_session = FocusSession.objects.create(
+            user=self.user,
+            duration_minutes=30,
+            session_started=today_datetime
+        )
+        yesterday_session = FocusSession.objects.create(
+            user=self.user,
+            duration_minutes=45,
+            session_started=yesterday_datetime
+        )
+        response = self.client.get(self.url,
+                                   {"date":selected_date.isoformat()})
+        
+        grouped_sessions = response.context["grouped_sessions"]
+
+        sessions = [session for sessions in grouped_sessions.values()
+                    for session in sessions]
+
+        session_ids = {session.pk for session in sessions}
+
+        self.assertEqual(session_ids, {today_session.pk})
+
+    def test_invalid_date_shows_error(self):
+        response = self.client.get(self.url,
+                                   {"date":"not-a-date"})
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNotNone(response.context["error"])
+
+    def test_select_date_with_no_session(self):
+        selected_date = timezone.localdate()
+
+        response = self.client.get(self.url,
+                                   {"date":selected_date.isoformat()})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["grouped_sessions"], {})
+        self.assertContains(response, "No sessions on this date.")
+
+    def test_history_with_no_sessions(self):
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["grouped_sessions"], {})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Your focus journey starts here.")
+

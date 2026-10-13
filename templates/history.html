@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+
+{% block title %}Focus History{% endblock title %}
+
+{% block content %}
+
+<div class="history-page">
+
+<header class="history-header">
+    <p class="eyebrow">YOUR ACTIVITY</p>
+    <h1>Focus History</h1>
+    <p class="history-subtitle">
+        Look back at the time you've dedicated to staying focused.
+    </p>
+</header>
+
+<form method="get" class="history-filter">
+    <label for="history-date">Filter by date</label>
+
+    <div class="history-filter-controls">
+        <input
+            type="date"
+            id="history-date"
+            name="date"
+            value="{{ selected_date }}"
+        >
+
+        <button type="submit" class="primary-button">
+            Apply
+        </button>
+
+        <a href="{% url 'focus_history' %}"
+           class="history-clear-filter">
+            Clear
+        </a>
+    </div>
+</form>
+
+{% if error %}
+    <p class="history-filter-error">{{ error }}</p>
+{% endif %}
+
+<div class="history-list">
+
+    {% for day, sessions in grouped_sessions.items %}
+
+        <section class="history-day">
+
+            <div class="history-day-header">
+                <div class="history-date-marker" aria-hidden="true">
+                    <span></span>
+                </div>
+
+                <div>
+                    <h2>{{ day|date:"l, j F Y" }}</h2>
+                    <p>
+                        {{ sessions|length }}
+                        session{{ sessions|length|pluralize }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="history-session-list">
+
+                {% for session in sessions %}
+
+                    <article class="history-session">
+
+                        <div class="history-session-icon"
+                             aria-hidden="true">
+                            <svg viewBox="0 0 24 24"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 stroke-width="1.7"
+                                 stroke-linecap="round"
+                                 stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <path d="M12 7v5l3 2"></path>
+                            </svg>
+                        </div>
+
+                        <div class="history-session-details">
+                            <span class="history-session-label">
+                                SESSION STARTED
+                            </span>
+                            <h3>
+                                {{ session.session_started|date:"g:i A" }}
+                            </h3>
+                        </div>
+
+                        <div class="history-duration">
+                            <span>{{ session.duration_minutes }}</span>
+                            <span>min</span>
+                        </div>
+
+                    </article>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+    {% empty %}
+
+        <section class="history-empty">
+
+            <div class="history-empty-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24"
+                     fill="none"
+                     stroke="currentColor"
+                     stroke-width="1.6"
+                     stroke-linecap="round"
+                     stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M12 7v5l3 2"></path>
+                </svg>
+            </div>
+
+            {% if selected_date and not error %}
+                <h2>No sessions on this date.</h2>
+                <p>
+                    You haven't recorded any focus sessions for
+                    {{ selected_date }}. Try another date or clear
+                    the filter to see your full history.
+                </p>
+                <a href="{% url 'focus_history' %}"
+                   class="primary-button history-empty-button">
+                    View All History
+                </a>
+            {% else %}
+                <h2>Your focus journey starts here.</h2>
+                <p>
+                    You haven't recorded any focus sessions yet.
+                    Start your first session and your history will appear here.
+                </p>
+                <a href="{% url 'create_session' %}"
+                   class="primary-button history-empty-button">
+                    Start a Session
+                </a>
+            {% endif %}
+
+        </section>
+
+    {% endfor %}
+
+</div>
+
+</div>
+
+{% endblock content %}
+
+{% comment %} {% extends "base.html" %}
+
+{% block title %}Focus History{% endblock title %}
+
+{% block content %}
+
+<div class="history-page">
+
+    <header class="history-header">
+        <p class="eyebrow">YOUR ACTIVITY</p>
+        <h1>Focus History</h1>
+        <p class="history-subtitle">
+            Look back at the time you've dedicated to staying focused.
+        </p>
+    </header>
+
+    <div class="history-list">
+
+        {% for day, sessions in grouped_sessions.items %}
+
+            <section class="history-day">
+
+                <div class="history-day-header">
+                    <div class="history-date-marker" aria-hidden="true">
+                        <span></span>
+                    </div>
+
+                    <div>
+                        <h2>{{ day|date:"l, j F Y" }}</h2>
+                        <p>
+                            {{ sessions|length }}
+                            session{{ sessions|length|pluralize }}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="history-session-list">
+
+                    {% for session in sessions %}
+
+                        <article class="history-session">
+
+                            <div class="history-session-icon"
+                                 aria-hidden="true">
+                                <svg viewBox="0 0 24 24"
+                                     fill="none"
+                                     stroke="currentColor"
+                                     stroke-width="1.7"
+                                     stroke-linecap="round"
+                                     stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="9"></circle>
+                                    <path d="M12 7v5l3 2"></path>
+                                </svg>
+                            </div>
+
+                            <div class="history-session-details">
+                                <span class="history-session-label">
+                                    SESSION STARTED
+                                </span>
+                                <h3>
+                                    {{ session.session_started|date:"g:i A" }}
+                                </h3>
+                            </div>
+
+                            <div class="history-duration">
+                                <span>{{ session.duration_minutes }}</span>
+                                <span>min</span>
+                            </div>
+
+                        </article>
+
+                    {% endfor %}
+
+                </div>
+
+            </section>
+
+        {% empty %}
+
+            <section class="history-empty">
+
+                <div class="history-empty-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"
+                         fill="none"
+                         stroke="currentColor"
+                         stroke-width="1.6"
+                         stroke-linecap="round"
+                         stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="9"></circle>
+                        <path d="M12 7v5l3 2"></path>
+                    </svg>
+                </div>
+
+                <h2>Your focus journey starts here.</h2>
+
+                <p>
+                    You haven't recorded any focus sessions yet.
+                    Start your first session and your history will appear here.
+                </p>
+
+                <a href="{% url 'create_session' %}"
+                   class="primary-button history-empty-button">
+                    Start a Session
+                </a>
+
+            </section>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock content %} {% endcomment %}
