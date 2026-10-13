@@ -14,6 +14,11 @@ class SignUp(generic.CreateView):
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect("home")
+        return super().dispatch(request, *args, **kwargs)
+
 @login_required
 def set_goal(request):
 
